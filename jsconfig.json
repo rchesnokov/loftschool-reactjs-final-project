@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "checkJs": false,
+    "baseUrl": "./src",
+    "paths": {
+      "api/*": ["./api/*"],
+      "components/*": ["./components/*"],
+      "ducks/*": ["./ducks/**"],
+      "routes/*": ["./routes/**"],
+      "sagas/*": ["./sagas/**"],
+      "utils/*": ["./utils/**"]
+    },
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
+    ]
+  }
+  // "exclude": ["node_modules"]
+}

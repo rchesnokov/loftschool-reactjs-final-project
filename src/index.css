@@ -1,0 +1,32 @@
+* {
+  outline: none;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  font-size: 10px;
+}
+
+body {
+  height: 100%;
+  overflow: hidden;
+  font-size: 1.6rem;
+  font-family: Roboto, sans-serif;
+}
+
+#root {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.link {
+  color: #4db6e2;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.link:hover {
+  color: #4199be;
+}
