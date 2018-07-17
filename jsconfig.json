@@ -10,12 +10,8 @@
       "routes/*": ["./routes/**"],
       "sagas/*": ["./sagas/**"],
       "utils/*": ["./utils/**"]
-    },
-    "plugins": [
-      {
-        "name": "typescript-styled-plugin"
-      }
-    ]
-  }
-  // "exclude": ["node_modules"]
+    }
+  },
+  "include": ["typings/index.d.ts"],
+  "exclude": ["node_modules"]
 }
