@@ -4,13 +4,13 @@ import Table from 'components/Table'
 
 class Account extends PureComponent {
   render() {
-    const content = [
+    const tableContent = [
       [<Integer>12.</Integer>, <Decimal>12332</Decimal>, <Unit>ETH</Unit>],
       [<Integer>1.</Integer>, <Decimal>234032</Decimal>, <Unit>BTC</Unit>],
       [<Integer>1 123.</Integer>, <Decimal>00</Decimal>, <Unit>$</Unit>],
     ]
 
-    return <Table content={content} />
+    return <Table content={tableContent} />
   }
 }
 

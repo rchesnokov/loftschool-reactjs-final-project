@@ -2,13 +2,14 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 
 class Table extends PureComponent {
+  renderCells = row => row.map(cell => <Cell>{cell}</Cell>)
+
   render() {
     const { content } = this.props
 
     return (
       <STable>
-        {content &&
-          content.map(row => <tr>{row.map(cell => <Cell>{cell}</Cell>)}</tr>)}
+        {content && content.map(row => <tr>{this.renderCells(row)}</tr>)}
       </STable>
     )
   }
