@@ -62,6 +62,7 @@ const Container = styled.div`
 
 const Content = styled.section`
   flex-grow: 1;
+  background-color: #f5f5f5;
 `
 
 const Header = styled.div`

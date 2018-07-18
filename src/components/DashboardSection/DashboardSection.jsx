@@ -16,6 +16,10 @@ class DashboardSection extends PureComponent {
 
 const Section = styled.section`
   margin-bottom: 50px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 `
 
 const Heading = styled.h2`

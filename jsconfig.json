@@ -2,16 +2,16 @@
   "compilerOptions": {
     "target": "esnext",
     "checkJs": false,
-    "baseUrl": "./src",
+    "baseUrl": "src",
     "paths": {
-      "api/*": ["./api/*"],
-      "components/*": ["./components/*"],
-      "ducks/*": ["./ducks/**"],
-      "routes/*": ["./routes/**"],
-      "sagas/*": ["./sagas/**"],
-      "utils/*": ["./utils/**"]
+      "api/*": ["api/*"],
+      "components/*": ["components/*"],
+      "ducks/*": ["ducks/**"],
+      "routes/*": ["routes/**"],
+      "sagas/*": ["sagas/**"],
+      "utils/*": ["utils/**"]
     }
   },
-  "include": ["typings/index.d.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*", "typings/index.d.ts"],
+  "exclude": ["node_modules/"]
 }

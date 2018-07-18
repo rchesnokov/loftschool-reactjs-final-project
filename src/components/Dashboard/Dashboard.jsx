@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import DashboardSection from 'components/DashboardSection'
 import Account from 'components/Account'
+import Operations from 'components/Operations'
 
 class Dashboard extends PureComponent {
   render() {
@@ -11,10 +12,15 @@ class Dashboard extends PureComponent {
           <DashboardSection heading="Ваш счет">
             <Account />
           </DashboardSection>
-          <DashboardSection heading="Покупка/продажа">asd</DashboardSection>
+
+          <DashboardSection heading="Покупка/продажа">
+            <Operations />
+          </DashboardSection>
         </SmallSection>
+
         <LargeSection>
           <DashboardSection heading="Окно графика">asd</DashboardSection>
+
           <DashboardSection heading="История операций">asd</DashboardSection>
         </LargeSection>
       </Container>
@@ -25,7 +31,8 @@ class Dashboard extends PureComponent {
 const Container = styled.div`
   display: flex;
   /* flex-wrap: wrap; */
-  padding: 50px 0;
+  padding: 50px;
+  background-color: white;
 `
 
 const SmallSection = styled.div`
