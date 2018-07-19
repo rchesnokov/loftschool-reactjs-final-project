@@ -1,4 +1,4 @@
-import { call, fork, put, take, takeLatest } from 'redux-saga/effects'
+import { call, put, take, takeLatest } from 'redux-saga/effects'
 import { setTokenApi, clearTokenApi, login, registration } from 'api/api'
 import {
   getTokenFromLocalStorage,

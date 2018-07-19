@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import DashboardSection from 'components/DashboardSection'
 import Account from 'components/Account'
+import Graph from 'components/Graph'
+import History from 'components/History'
 import Operations from 'components/Operations'
 
 class Dashboard extends PureComponent {
@@ -19,9 +21,13 @@ class Dashboard extends PureComponent {
         </SmallSection>
 
         <LargeSection>
-          <DashboardSection heading="Окно графика">asd</DashboardSection>
+          <DashboardSection heading="Окно графика">
+            <Graph />
+          </DashboardSection>
 
-          <DashboardSection heading="История операций">asd</DashboardSection>
+          <DashboardSection heading="История операций">
+            <History />
+          </DashboardSection>
         </LargeSection>
       </Container>
     )

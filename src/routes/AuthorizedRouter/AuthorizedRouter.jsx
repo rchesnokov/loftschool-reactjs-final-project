@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { Redirect, Route, Switch, withRouter } from 'react-router-dom'
+import { Route, Switch, withRouter } from 'react-router-dom'
 import Layout from 'components/Layout'
 import Dashboard from 'components/Dashboard'
 import { logout } from 'ducks/auth'

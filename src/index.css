@@ -30,3 +30,34 @@ body {
 .link:hover {
   color: #4199be;
 }
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 14px;
+}
+
+.pagination li {
+  height: 30px;
+  width: 30px;
+  margin-left: -1px;
+  line-height: 27px;
+  text-align: center;
+  border: 1px solid #eaebec;
+  background-color: #fff;
+}
+
+.pagination li:first-child {
+  border-radius: 3px 0 0 3px;
+  margin-left: 0;
+}
+
+.pagination li:last-child {
+  border-radius: 0 3px 3px 0;
+}
+
+.pagination .break a {
+  cursor: default;
+}

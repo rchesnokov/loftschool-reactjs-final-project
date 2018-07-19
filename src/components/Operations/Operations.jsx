@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import Table from 'components/Table'
-import {} from ''
 
 class Operations extends PureComponent {
   render() {
@@ -43,14 +42,23 @@ const Button = styled.button`
   border: none;
   border-radius: 3px;
   cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
 `
 
 const BuyButton = Button.extend`
   background-color: #db5753;
+
+  &:hover {
+    background-color: #de6764;
+  }
 `
 
 const SellButton = Button.extend`
   background-color: #4db6e2;
+
+  &:hover {
+    background-color: #5ebde4;
+  }
 `
 
 export default Operations
