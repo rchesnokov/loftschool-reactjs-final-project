@@ -84,7 +84,7 @@ export class Login extends PureComponent {
                     icon={iconLock}
                     onChange={handleChange}
                   />
-                  <Button>{submitText}</Button>
+                  <Button type="submit">{submitText}</Button>
                 </Form>
               )}
             />

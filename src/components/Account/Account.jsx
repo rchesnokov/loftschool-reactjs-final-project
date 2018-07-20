@@ -1,21 +1,34 @@
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import Table from 'components/Table'
+import { getBtc, getEth, getUsd } from 'modules/account'
+import { getIntegerPart, getDecimalPart } from 'utils/helpers'
+
+const mapStateToProps = state => ({
+  btc: getBtc(state),
+  eth: getEth(state),
+  usd: getUsd(state),
+})
 
 class Account extends PureComponent {
   render() {
-    const tableContent = [
-      [<Integer>12.</Integer>, <Decimal>12332</Decimal>, <Unit>ETH</Unit>],
-      [<Integer>1.</Integer>, <Decimal>234032</Decimal>, <Unit>BTC</Unit>],
-      [<Integer>1 123.</Integer>, <Decimal>00</Decimal>, <Unit>$</Unit>],
-    ]
+    const { btc, eth, usd } = this.props
+    const currencyNames = ['BTH', 'ETC', '$']
+    const tableContent = [btc, eth, usd].map((currency, index) => [
+      <Integer>{getIntegerPart(currency)}.</Integer>,
+      <Decimal>{getDecimalPart(currency)}</Decimal>,
+      <Unit>{currencyNames[index]}</Unit>,
+    ])
 
     return <Table content={tableContent} />
   }
 }
 
 const Value = styled.div`
+  height: 35px;
   padding: 7px 60px 8px;
+  line-height: 20px;
   background-color: #404243;
 `
 
@@ -37,4 +50,4 @@ const Unit = styled.div`
   padding: 7px 20px 8px;
 `
 
-export default Account
+export default connect(mapStateToProps)(Account)

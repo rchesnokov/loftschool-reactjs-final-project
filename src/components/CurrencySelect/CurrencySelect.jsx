@@ -1,26 +1,48 @@
 import React, { PureComponent } from 'react'
 import styled, { css } from 'styled-components'
 import { connect } from 'react-redux'
-import { getCurrentBtcRate, getCurrentEthRate } from 'modules/currency'
+import {
+  getCurrentBtcRate,
+  getCurrentEthRate,
+  getSelected,
+  selectCurrency,
+} from 'modules/currency'
 
 const mapStateToProps = state => ({
   btcRate: getCurrentBtcRate(state),
   ethRate: getCurrentEthRate(state),
+  selected: getSelected(state),
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  selectCurrency,
+}
 
 class CurrencySelect extends PureComponent {
+  changeCurrency = currency => {
+    this.props.selectCurrency(currency)
+  }
+
   render() {
-    const { btcRate, ethRate } = this.props
+    const { btcRate, ethRate, selected } = this.props
 
     return (
       <Wrapper>
-        <Currency active>
+        <Currency
+          active={selected === 'btc'}
+          onClick={e => {
+            this.changeCurrency('btc', e)
+          }}
+        >
           <div>{btcRate}</div>
           <div>1 BTC</div>
         </Currency>
-        <Currency>
+        <Currency
+          active={selected === 'eth'}
+          onClick={e => {
+            this.changeCurrency('eth', e)
+          }}
+        >
           <div>{ethRate}</div>
           <div>1 ETH</div>
         </Currency>
@@ -67,4 +89,7 @@ const Currency = styled.div`
     `};
 `
 
-export default connect(mapStateToProps)(CurrencySelect)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CurrencySelect)

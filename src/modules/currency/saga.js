@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { call, put, race, select, take, takeLatest } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
 import { candles } from 'api/server'
 import {
@@ -8,7 +8,9 @@ import {
   fetchEthRequest,
   fetchEthSuccess,
   fetchEthFailure,
-} from 'modules/currency'
+  selectOffset,
+} from './actions'
+import { getOffset } from './selectors'
 
 function* fetchBtc({ payload }) {
   try {
@@ -35,10 +37,10 @@ export function* fetchCurrenciesWatch() {
 
 export function* currencyGraphFlow() {
   while (true) {
-    // const offset = yield select(getOffset)
-    yield put(fetchBtcRequest('1h'))
-    yield put(fetchEthRequest('1h'))
+    const offset = yield select(getOffset)
+    yield put(fetchBtcRequest(offset))
+    yield put(fetchEthRequest(offset))
 
-    yield delay(15000)
+    yield race([delay(20000), take(selectOffset)])
   }
 }

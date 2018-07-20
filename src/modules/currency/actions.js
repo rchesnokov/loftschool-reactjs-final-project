@@ -7,6 +7,8 @@ export const {
   fetchEthRequest,
   fetchEthSuccess,
   fetchEthFailure,
+  selectCurrency,
+  selectOffset,
 } = createActions(
   'FETCH_BTC_REQUEST',
   'FETCH_BTC_SUCCESS',
@@ -14,4 +16,6 @@ export const {
   'FETCH_ETH_REQUEST',
   'FETCH_ETH_SUCCESS',
   'FETCH_ETH_FAILURE',
+  'SELECT_CURRENCY',
+  'SELECT_OFFSET',
 )

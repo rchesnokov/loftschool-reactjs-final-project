@@ -1,16 +1,36 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import * as Recharts from 'recharts'
+import Loader from 'components/Loader'
 import styled, { css } from 'styled-components'
-import { getBtc } from 'modules/currency'
+import {
+  getIsLoading,
+  getFormattedCurrencyData,
+  getCurrentServerTime,
+  getOffset,
+  selectOffset,
+} from 'modules/currency'
 
 const mapStateToProps = state => ({
-  currencyData: getBtc(state),
+  currencyData: getFormattedCurrencyData(state),
+  currentTime: getCurrentServerTime(state),
+  offset: getOffset(state),
+  loading: getIsLoading(state),
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  selectOffset,
+}
 
 class Graph extends PureComponent {
+  selectOffset = offset => {
+    this.props.selectOffset(offset)
+  }
+
+  getXAxisUnit(offset) {
+    return offset === '1h' ? '' : offset === '7d' ? 'д.' : 'ч.'
+  }
+
   formatYlineTicks = tick => {
     return Math.round(tick)
   }
@@ -26,43 +46,80 @@ class Graph extends PureComponent {
       Line,
     } = Recharts
 
-    const { currencyData } = this.props
+    const { loading, currencyData, currentTime, offset } = this.props
 
     return (
       <Wrapper>
+        {loading && <Loader />}
+
         <Header>
-          <span>Время сервера: 07:07</span>
+          <span>Время сервера: {currentTime}</span>
           <span>
-            <OffsetControl active>1ч</OffsetControl>
-            <OffsetControl>4ч</OffsetControl>
-            <OffsetControl>День</OffsetControl>
-            <OffsetControl>Неделя</OffsetControl>
-            <OffsetControl>Месяц</OffsetControl>
+            <OffsetControl
+              active={offset === '1h'}
+              onClick={this.selectOffset.bind(this, '1h')}
+            >
+              1ч
+            </OffsetControl>
+            <OffsetControl
+              active={offset === '4h'}
+              onClick={this.selectOffset.bind(this, '4h')}
+            >
+              4ч
+            </OffsetControl>
+            <OffsetControl
+              active={offset === '8h'}
+              onClick={this.selectOffset.bind(this, '8h')}
+            >
+              8ч
+            </OffsetControl>
+            <OffsetControl
+              active={offset === '1d'}
+              onClick={this.selectOffset.bind(this, '1d')}
+            >
+              День
+            </OffsetControl>
+            <OffsetControl
+              active={offset === '7d'}
+              onClick={this.selectOffset.bind(this, '7d')}
+            >
+              Неделя
+            </OffsetControl>
           </span>
         </Header>
-        <Body>
+
+        <Body isLoading={loading}>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
               data={currencyData}
               margin={{ top: 10, right: 0, left: 0, bottom: 10 }}
             >
               <CartesianGrid vertical={false} />
-              <XAxis interval={10} dataKey="name" />
+              <XAxis
+                interval={20}
+                dataKey="mts"
+                unit={this.getXAxisUnit(offset)}
+              />
               <YAxis
                 type="number"
+                interval="preserveEnd"
                 domain={[99999, 0]}
                 tickFormatter={this.formatYlineTicks}
                 allowDecimals={false}
               />
               <Legend verticalAlign="top" height={36} />
               <Line
+                name="Покупка"
                 type="monotone"
+                legendType="plainline"
                 dot={false}
                 dataKey="sell"
                 stroke="#4db6e2"
               />
               <Line
+                name="Продажа"
                 type="monotone"
+                legendType="plainline"
                 dot={false}
                 dataKey="purchase"
                 stroke="#db5753"
@@ -76,6 +133,7 @@ class Graph extends PureComponent {
 }
 
 const Wrapper = styled.div`
+  position: relative;
   overflow: hidden;
   border: 2px solid #edf0f1;
   border-radius: 5px;
@@ -85,13 +143,19 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 40px;
+  min-height: 40px;
   padding: 4px 25px 6px;
   background-color: #edf0f1;
 `
 
 const Body = styled.div`
   padding: 10px 0;
+
+  ${props =>
+    props.isLoading &&
+    css`
+      filter: blur(5px);
+    `};
 `
 
 const OffsetControl = styled.span`

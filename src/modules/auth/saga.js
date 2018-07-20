@@ -13,7 +13,9 @@ import {
   registerSuccess,
   registerFailure,
   logout,
-} from 'modules/auth'
+} from './actions'
+import { fetchUserRequest } from 'modules/user'
+import { fetchAccountRequest } from 'modules/account'
 
 function* authorize(email, password) {
   try {
@@ -55,6 +57,9 @@ export function* flowAuth() {
     }
 
     if (token) {
+      yield put(fetchUserRequest())
+      yield put(fetchAccountRequest())
+
       yield take(logout)
 
       yield call(removeTokenFromLocalStorage)

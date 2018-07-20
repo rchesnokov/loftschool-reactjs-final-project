@@ -7,20 +7,20 @@ class Operations extends PureComponent {
     const tableContent = [
       [
         <Rate>
-          <Input type="text" value="0.1" />
+          <Input type="text" defaultValue="0.1" />
         </Rate>,
         <Unit>BTC</Unit>,
       ],
       [
         <Rate>
-          <Input type="text" value="54.45" />
+          <Input type="text" defaultValue="54.45" />
         </Rate>,
         <Unit>$</Unit>,
         <BuyButton>Продать</BuyButton>,
       ],
       [
         <Rate>
-          <Input type="text" value="55.25" />
+          <Input type="text" defaultValue="55.25" />
         </Rate>,
         <Unit>$</Unit>,
         <SellButton>Купить</SellButton>,

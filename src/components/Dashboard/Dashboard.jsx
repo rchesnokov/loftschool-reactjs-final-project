@@ -36,17 +36,34 @@ class Dashboard extends PureComponent {
 
 const Container = styled.div`
   display: flex;
-  /* flex-wrap: wrap; */
   padding: 50px;
   background-color: white;
+
+  @media (max-width: 1280px) {
+    padding: 30px 10px;
+    flex-wrap: wrap;
+  }
 `
 
 const SmallSection = styled.div`
   flex: 0 0 40%;
+
+  @media (max-width: 1280px) {
+    display: flex;
+    flex-basis: 100%;
+
+    & > * {
+      margin-right: 30px;
+    }
+  }
 `
 
 const LargeSection = styled.div`
   flex: 0 0 60%;
+
+  @media (max-width: 1280px) {
+    flex-basis: 100%;
+  }
 `
 
 export default Dashboard

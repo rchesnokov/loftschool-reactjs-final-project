@@ -1,13 +1,12 @@
 import React, { PureComponent } from 'react'
 import styled, { css } from 'styled-components'
-import logo from './images/Logo-white.svg'
-import CurrencySelect from 'components/CurrencySelect'
-
 import { Particles } from 'react-particles-js'
 import particlesParams from 'utils/particles-params'
+import CurrencySelect from 'components/CurrencySelect'
+import logo from './images/Logo-white.svg'
 class Layout extends PureComponent {
   render() {
-    const { children, logoutHandler } = this.props
+    const { children, logoutHandler, userEmail } = this.props
 
     return (
       <PageWrapper>
@@ -17,7 +16,7 @@ class Layout extends PureComponent {
               <Logo src={logo} />
               <SectionName>Торги</SectionName>
               <CurrencySelect />
-              <User>useruseruser@mail.com</User>
+              <User>{userEmail}</User>
               <HeaderButton onClick={logoutHandler}>Выйти</HeaderButton>
             </HeaderInner>
           </Container>
@@ -67,16 +66,20 @@ const PageWrapper = styled.div`
 const Container = styled.div`
   max-width: 1280px;
   margin: 0 auto;
+
+  @media (max-width: 1280px) {
+    padding: 0 5px;
+  }
 `
 
 const Main = styled.main`
   position: relative;
+  flex-grow: 1;
 `
 
 const Content = styled.section`
   position: relative;
   z-index: 1;
-  flex-grow: 1;
 `
 
 const Header = styled.div`
@@ -100,15 +103,24 @@ const SectionName = styled.span`
   margin-left: 50px;
   color: #61dafb;
   font-weight: 700;
+
+  @media (max-width: 1280px) {
+    display: none;
+  }
 `
 
 const User = styled.div`
   width: 120px;
+  margin-right: 30px;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-right: 30px;
+  text-align: right;
   line-height: 20px;
   color: white;
+
+  @media (max-width: 1280px) {
+    display: none;
+  }
 `
 
 const HeaderButton = styled.button`
