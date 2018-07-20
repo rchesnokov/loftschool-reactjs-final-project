@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import * as Recharts from 'recharts'
 import styled, { css } from 'styled-components'
-import { getBtc } from 'ducks/currency'
+import { getBtc } from 'modules/currency'
 
 const mapStateToProps = state => ({
   currencyData: getBtc(state),

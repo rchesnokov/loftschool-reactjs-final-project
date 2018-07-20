@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Route, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { getIsAuthorized } from 'ducks/auth'
+import { getIsAuthorized } from 'modules/auth'
 
 const mapStateToProps = state => ({
   isAuthorized: getIsAuthorized(state),

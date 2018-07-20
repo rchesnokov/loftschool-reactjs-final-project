@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components'
 import logo from './images/Logo-white.svg'
 import CurrencySelect from 'components/CurrencySelect'
 
+import { Particles } from 'react-particles-js'
+import particlesParams from 'utils/particles-params'
 class Layout extends PureComponent {
   render() {
     const { children, logoutHandler } = this.props
@@ -21,9 +23,22 @@ class Layout extends PureComponent {
           </Container>
         </Header>
 
-        <Content>
-          <Container>{children}</Container>
-        </Content>
+        <Main>
+          <Content>
+            <Container>{children}</Container>
+          </Content>
+
+          <Particles
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: 100 + '%',
+              height: 100 + '%',
+            }}
+            params={particlesParams}
+          />
+        </Main>
 
         <Footer>
           <Container>
@@ -46,6 +61,7 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  background-color: #f5f5f5;
 `
 
 const Container = styled.div`
@@ -53,9 +69,14 @@ const Container = styled.div`
   margin: 0 auto;
 `
 
+const Main = styled.main`
+  position: relative;
+`
+
 const Content = styled.section`
+  position: relative;
+  z-index: 1;
   flex-grow: 1;
-  background-color: #f5f5f5;
 `
 
 const Header = styled.div`

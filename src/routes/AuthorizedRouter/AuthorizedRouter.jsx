@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom'
 import Layout from 'components/Layout'
 import Dashboard from 'components/Dashboard'
-import { logout } from 'ducks/auth'
+import { logout } from 'modules/auth'
 
 const mapStateToProps = state => ({})
 

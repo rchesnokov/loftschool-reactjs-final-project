@@ -8,7 +8,7 @@ import {
   fetchEthRequest,
   fetchEthSuccess,
   fetchEthFailure,
-} from 'ducks/currency'
+} from 'modules/currency'
 
 function* fetchBtc({ payload }) {
   try {

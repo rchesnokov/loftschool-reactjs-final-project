@@ -51,6 +51,8 @@ const Unit = Value.extend`
 
 const Input = styled.input`
   width: 100px;
+  padding: 0;
+  font-size: 14px;
   line-height: 1;
   border: none;
   background-color: transparent;

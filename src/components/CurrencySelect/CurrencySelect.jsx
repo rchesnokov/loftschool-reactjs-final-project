@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import styled, { css } from 'styled-components'
 import { connect } from 'react-redux'
-import { getCurrentBtcRate, getCurrentEthRate } from 'ducks/currency'
+import { getCurrentBtcRate, getCurrentEthRate } from 'modules/currency'
 
 const mapStateToProps = state => ({
   btcRate: getCurrentBtcRate(state),

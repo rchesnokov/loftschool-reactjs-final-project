@@ -10,7 +10,7 @@ import {
   getIsAuthorized,
   getIsErrorPresent,
   getErrorMessage,
-} from 'ducks/auth'
+} from 'modules/auth'
 
 import { Particles } from 'react-particles-js'
 import particlesParams from 'utils/particles-params'
@@ -100,7 +100,7 @@ export class Login extends PureComponent {
           </Block>
         </Container>
 
-        {/* <Particles
+        <Particles
           style={{
             position: 'absolute',
             top: 0,
@@ -109,7 +109,7 @@ export class Login extends PureComponent {
             height: 100 + '%',
           }}
           params={particlesParams}
-        /> */}
+        />
       </Wrapper>
     )
   }

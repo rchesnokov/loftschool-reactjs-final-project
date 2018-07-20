@@ -6,7 +6,7 @@
     "paths": {
       "api/*": ["api/*"],
       "components/*": ["components/*"],
-      "ducks/*": ["ducks/**"],
+      "modules/*": ["modules/**"],
       "routes/*": ["routes/**"],
       "sagas/*": ["sagas/**"],
       "utils/*": ["utils/**"]

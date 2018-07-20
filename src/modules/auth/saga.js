@@ -13,7 +13,7 @@ import {
   registerSuccess,
   registerFailure,
   logout,
-} from 'ducks/auth'
+} from 'modules/auth'
 
 function* authorize(email, password) {
   try {
