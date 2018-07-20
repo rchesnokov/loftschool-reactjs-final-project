@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch, withRouter } from 'react-router-dom'
+import { Route, Redirect, Switch, withRouter } from 'react-router-dom'
 import Layout from 'components/Layout'
 import Dashboard from 'components/Dashboard'
 import { logout } from 'ducks/auth'
@@ -21,6 +21,7 @@ export class AuthorizedRouter extends PureComponent {
       <Layout logoutHandler={this.handleLogoutClick}>
         <Switch>
           <Route path="/" component={Dashboard} />
+          <Redirect to="/" />
         </Switch>
       </Layout>
     )

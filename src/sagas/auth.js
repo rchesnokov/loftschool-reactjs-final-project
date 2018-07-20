@@ -1,5 +1,5 @@
 import { call, put, take, takeLatest } from 'redux-saga/effects'
-import { setTokenApi, clearTokenApi, login, registration } from 'api/api'
+import { setTokenApi, clearTokenApi, login, registration } from 'api/server'
 import {
   getTokenFromLocalStorage,
   setTokenToLocalStorage,

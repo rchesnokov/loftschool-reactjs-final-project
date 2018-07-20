@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import logo from './images/Logo-white.svg'
+import CurrencySelect from 'components/CurrencySelect'
 
 class Layout extends PureComponent {
   render() {
@@ -13,16 +14,8 @@ class Layout extends PureComponent {
             <HeaderInner>
               <Logo src={logo} />
               <SectionName>Торги</SectionName>
-              <Rates>
-                <Currency>
-                  <div>4 277,6</div>
-                  <div>1 BTC</div>
-                </Currency>
-                <Currency>
-                  <div>290</div>
-                  <div>1 ETH</div>
-                </Currency>
-              </Rates>
+              <CurrencySelect />
+              <User>useruseruser@mail.com</User>
               <HeaderButton onClick={logoutHandler}>Выйти</HeaderButton>
             </HeaderInner>
           </Container>
@@ -88,26 +81,13 @@ const SectionName = styled.span`
   font-weight: 700;
 `
 
-const Rates = styled.div`
-  display: flex;
-  height: 100%;
-  margin: 0 auto;
-`
-
-const Currency = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 140px;
-  margin: 0 10px;
-  background-color: #404243;
-  color: #fff;
-
-  & > * {
-    margin: 2px 0;
-  }
+const User = styled.div`
+  width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 30px;
+  line-height: 20px;
+  color: white;
 `
 
 const HeaderButton = styled.button`
@@ -117,6 +97,13 @@ const HeaderButton = styled.button`
   color: #2a2c2e;
   border: none;
   border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  &:hover {
+    background-color: #5ebde4;
+    color: white;
+  }
 `
 
 const Footer = styled.div`

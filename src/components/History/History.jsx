@@ -11,10 +11,12 @@ class History extends PureComponent {
       <Wrapper>
         <Table>
           <thead>
-            <th>Операция</th>
-            <th>Дата</th>
-            <th>BTC</th>
-            <th>USD</th>
+            <tr>
+              <th>Операция</th>
+              <th>Дата</th>
+              <th>BTC</th>
+              <th>USD</th>
+            </tr>
           </thead>
           <tbody>
             <tr>

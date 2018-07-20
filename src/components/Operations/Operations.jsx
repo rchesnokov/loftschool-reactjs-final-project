@@ -5,9 +5,26 @@ import Table from 'components/Table'
 class Operations extends PureComponent {
   render() {
     const tableContent = [
-      [<Rate>0.1</Rate>, <Unit>BTC</Unit>],
-      [<Rate>54.45</Rate>, <Unit>$</Unit>, <BuyButton>Продать</BuyButton>],
-      [<Rate>55.26</Rate>, <Unit>$</Unit>, <SellButton>Купить</SellButton>],
+      [
+        <Rate>
+          <Input type="text" value="0.1" />
+        </Rate>,
+        <Unit>BTC</Unit>,
+      ],
+      [
+        <Rate>
+          <Input type="text" value="54.45" />
+        </Rate>,
+        <Unit>$</Unit>,
+        <BuyButton>Продать</BuyButton>,
+      ],
+      [
+        <Rate>
+          <Input type="text" value="55.25" />
+        </Rate>,
+        <Unit>$</Unit>,
+        <SellButton>Купить</SellButton>,
+      ],
     ]
 
     return <Table content={tableContent} />
@@ -15,7 +32,7 @@ class Operations extends PureComponent {
 }
 
 const Value = styled.div`
-  padding: 7px 30px 8px;
+  padding: 7px 10px 8px;
   line-height: 18px;
   background-color: #f2f2f2;
 `
@@ -30,6 +47,13 @@ const Unit = Value.extend`
   text-align: right;
   color: #8a8a8a;
   border-radius: 0 5px 5px 0;
+`
+
+const Input = styled.input`
+  width: 100px;
+  line-height: 1;
+  border: none;
+  background-color: transparent;
 `
 
 const Button = styled.button`
