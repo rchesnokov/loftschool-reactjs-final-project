@@ -1,26 +1,78 @@
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import Table from 'components/Table'
+import { normalizeNumberInput, removeTrailingPoint } from 'utils/helpers'
+
+const mapStateToProps = state => ({})
+
+const mapDispatchToProps = {}
 
 class Operations extends PureComponent {
+  state = {
+    crypto: 0,
+    sell: 0,
+    purchase: 0,
+  }
+
+  cleanupValue = e => {
+    let name = e.target.name
+    let value = e.target.value
+    if (/\.$/.test(value)) {
+      this.setState({ [name]: removeTrailingPoint(value) })
+    }
+  }
+
+  handleInput = e => {
+    let name = e.target.name
+    let value = e.target.value
+
+    // Discard typing anything besides numbers and .
+    if (!/^[\d\.]*$/gi.test(value)) {
+      return
+    }
+
+    this.setState({
+      [name]: normalizeNumberInput(value),
+    })
+  }
+
   render() {
+    const { crypto, sell, purchase } = this.state
+
     const tableContent = [
       [
         <Rate>
-          <Input type="text" defaultValue="0.1" />
+          <Input
+            name="crypto"
+            type="text"
+            value={crypto}
+            onInput={this.handleInput}
+            onBlur={this.cleanupValue}
+          />
         </Rate>,
         <Unit>BTC</Unit>,
       ],
       [
         <Rate>
-          <Input type="text" defaultValue="54.45" />
+          <Input
+            name="sell"
+            type="text"
+            value={sell}
+            onInput={this.handleInput}
+          />
         </Rate>,
         <Unit>$</Unit>,
         <BuyButton>Продать</BuyButton>,
       ],
       [
         <Rate>
-          <Input type="text" defaultValue="55.25" />
+          <Input
+            name="purchase"
+            type="text"
+            value={purchase}
+            onInput={this.handleInput}
+          />
         </Rate>,
         <Unit>$</Unit>,
         <SellButton>Купить</SellButton>,
@@ -87,4 +139,7 @@ const SellButton = Button.extend`
   }
 `
 
-export default Operations
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Operations)
