@@ -1,18 +1,28 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
+import { equals } from 'ramda'
 import styled from 'styled-components'
 import Table from 'components/Table'
 import { normalizeNumberInput, removeTrailingPoint } from 'utils/helpers'
+import { getSelectedCurrencyRates } from 'modules/currency'
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  rates: getSelectedCurrencyRates(state),
+})
 
 const mapDispatchToProps = {}
 
 class Operations extends PureComponent {
   state = {
-    crypto: 0,
-    sell: 0,
-    purchase: 0,
+    crypto: '0',
+    sell: '0',
+    purchase: '0',
+  }
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (equals(this.state, prevState)) {
+      return
+    }
   }
 
   cleanupValue = e => {
@@ -29,6 +39,7 @@ class Operations extends PureComponent {
 
     // Discard typing anything besides numbers and .
     if (!/^[\d\.]*$/gi.test(value)) {
+      console.log('return')
       return
     }
 
@@ -47,7 +58,7 @@ class Operations extends PureComponent {
             name="crypto"
             type="text"
             value={crypto}
-            onInput={this.handleInput}
+            onChange={this.handleInput}
             onBlur={this.cleanupValue}
           />
         </Rate>,
@@ -59,7 +70,8 @@ class Operations extends PureComponent {
             name="sell"
             type="text"
             value={sell}
-            onInput={this.handleInput}
+            onChange={this.handleInput}
+            onBlur={this.cleanupValue}
           />
         </Rate>,
         <Unit>$</Unit>,
@@ -71,7 +83,8 @@ class Operations extends PureComponent {
             name="purchase"
             type="text"
             value={purchase}
-            onInput={this.handleInput}
+            onChange={this.handleInput}
+            onBlur={this.cleanupValue}
           />
         </Rate>,
         <Unit>$</Unit>,

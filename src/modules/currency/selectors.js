@@ -20,13 +20,21 @@ export const getIsLoading = createSelector(
 
 export const getSelectedCurrencyData = createSelector(
   [getCurrencies, getSelected],
-  (currencies, selected) => currencies[selected].reverse(),
+  (currencies, selected) => currencies[selected],
 )
 
 export const getFormattedCurrencyData = createSelector(
   [getSelectedCurrencyData, getOffset],
   (data, offset) =>
-    R.map(entry => R.assoc('mts', timeFormatter(entry, offset), entry), data),
+    R.map(
+      entry => R.assoc('mts', timeFormatter(entry, offset), entry),
+      data,
+    ).reverse(),
+)
+
+export const getSelectedCurrencyRates = createSelector(
+  getSelectedCurrencyData,
+  data => (data.length ? data[0] : { sell: 0, purchase: 0 }),
 )
 
 export const getCurrentBtcRate = getCurrencyRateMaker('btc')
