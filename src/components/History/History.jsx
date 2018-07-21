@@ -1,12 +1,33 @@
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import ReactPaginate from 'react-paginate'
 import styled from 'styled-components'
+import {
+  fetchTransactionsRequest,
+  getFormattedTransactions,
+} from 'modules/transactions/index'
+import { getSelected as getSelectedCurrency } from 'modules/currency/index'
 import arrow from './images/angle-pointing-to-left.svg'
 
+const mapStateToProps = state => ({
+  selectedCurrency: getSelectedCurrency(state),
+  transactions: getFormattedTransactions(state),
+})
+
+const mapDispatchToProps = {
+  fetchTransactionsRequest,
+}
+
 class History extends PureComponent {
+  componentDidMount = () => {
+    this.props.fetchTransactionsRequest()
+  }
+
   handlePageClick = () => {}
 
   render() {
+    const { transactions, selectedCurrency } = this.props
+
     return (
       <Wrapper>
         <Table>
@@ -19,12 +40,15 @@ class History extends PureComponent {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Покупка</td>
-              <td>19.10.17 20:02</td>
-              <td>0.12332</td>
-              <td>309</td>
-            </tr>
+            {transactions &&
+              transactions.map(t => (
+                <tr key={t.id}>
+                  <td>Покупка</td>
+                  <td>{t.created_at}</td>
+                  <td>{t[`${selectedCurrency}_delta`]}</td>
+                  <td>{t.usd_delta}</td>
+                </tr>
+              ))}
           </tbody>
         </Table>
         <Bottom>
@@ -86,4 +110,7 @@ const ArrowRight = Arrow.extend`
   transform: rotate(0.5turn);
 `
 
-export default History
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(History)
