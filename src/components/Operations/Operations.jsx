@@ -1,9 +1,14 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { equals } from 'ramda'
+import * as R from 'ramda'
 import styled from 'styled-components'
 import Table from 'components/Table'
-import { normalizeNumberInput, removeTrailingPoint } from 'utils/helpers'
+import {
+  normalizeNumberInput,
+  containsOnlyDigitsAndPoint,
+  hasTrailingPoint,
+  removeTrailingPoint,
+} from 'utils/helpers'
 import { getSelectedCurrencyRates } from 'modules/currency'
 
 const mapStateToProps = state => ({
@@ -14,79 +19,104 @@ const mapDispatchToProps = {}
 
 class Operations extends PureComponent {
   state = {
-    crypto: '0',
-    sell: '0',
-    purchase: '0',
+    inputs: {
+      cryptocurrency: '1',
+      usdSell: '0',
+      usdPurchase: '0',
+    },
+    editing: false,
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    if (equals(this.state, prevState)) {
+    const { rates } = this.props
+    const { inputs, editing } = this.state
+    const editingUsd = !!editing && editing !== 'cryptocurrency'
+
+    if (!R.equals(rates, prevProps.rates) && !editingUsd) {
+      this.updateInputs()
       return
     }
+
+    if (R.equals(inputs, prevState.inputs)) {
+      return
+    }
+
+    const stateChanges = R.differenceWith(
+      (x, y) => x[1] === y[1],
+      R.toPairs(this.state.inputs),
+      R.toPairs(prevState.inputs),
+    )
+
+    if (!stateChanges.length) {
+      return
+    }
+
+    this.updateInputs(stateChanges[0])
   }
 
-  cleanupValue = e => {
+  updateInputs = name => {
+    const cryptocurrency = Number(this.state.inputs.cryptocurrency)
+    const { rates } = this.props
+
+    console.log(cryptocurrency, rates)
+
+    this.setState({
+      usdSell: String(cryptocurrency * rates.sell),
+      usdPurchase: String(cryptocurrency * rates.purchase),
+    })
+  }
+
+  handleFocus = e => {
+    this.setState({ editing: e.target.name })
+  }
+
+  hanleBlur = e => {
     let name = e.target.name
     let value = e.target.value
-    if (/\.$/.test(value)) {
-      this.setState({ [name]: removeTrailingPoint(value) })
+    if (hasTrailingPoint(value)) {
+      value = removeTrailingPoint(value)
     }
+
+    this.setState({ [name]: value, editing: false })
   }
 
   handleInput = e => {
     let name = e.target.name
-    let value = e.target.value
+    let value = e.target.value || '0'
 
     // Discard typing anything besides numbers and .
-    if (!/^[\d\.]*$/gi.test(value)) {
-      console.log('return')
+    if (!containsOnlyDigitsAndPoint(value)) {
       return
     }
 
-    this.setState({
-      [name]: normalizeNumberInput(value),
-    })
+    value = normalizeNumberInput(value)
+
+    this.setState({ [name]: value })
+  }
+
+  renderInput(name) {
+    return (
+      <Input
+        name={name}
+        type="text"
+        value={this.state.inputs[name]}
+        onChange={this.handleInput}
+        onFocus={this.handleFocus}
+        onBlur={this.hanleBlur}
+      />
+    )
   }
 
   render() {
-    const { crypto, sell, purchase } = this.state
-
     const tableContent = [
+      [<Rate>{this.renderInput('cryptocurrency')}</Rate>, <Unit>BTC</Unit>],
       [
-        <Rate>
-          <Input
-            name="crypto"
-            type="text"
-            value={crypto}
-            onChange={this.handleInput}
-            onBlur={this.cleanupValue}
-          />
-        </Rate>,
-        <Unit>BTC</Unit>,
-      ],
-      [
-        <Rate>
-          <Input
-            name="sell"
-            type="text"
-            value={sell}
-            onChange={this.handleInput}
-            onBlur={this.cleanupValue}
-          />
-        </Rate>,
+        <Rate>{this.renderInput('usdSell')}</Rate>,
         <Unit>$</Unit>,
         <BuyButton>Продать</BuyButton>,
       ],
       [
-        <Rate>
-          <Input
-            name="purchase"
-            type="text"
-            value={purchase}
-            onChange={this.handleInput}
-            onBlur={this.cleanupValue}
-          />
-        </Rate>,
+        <Rate>{this.renderInput('usdPurchase')}</Rate>,
         <Unit>$</Unit>,
         <SellButton>Купить</SellButton>,
       ],

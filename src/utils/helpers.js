@@ -13,4 +13,6 @@ export const normalizeNumberInput = value =>
     .replace(/^0*(\d)/g, '$1') // remove first zeroes
     .replace(/^\./g, '0.') // add zero before first .
 
+export const containsOnlyDigitsAndPoint = value => /^\d+(\.\d*)?$/gi.test(value)
+export const hasTrailingPoint = value => /\.$/.test(value)
 export const removeTrailingPoint = value => value.replace(/\.$/g, '') // remove trailing comma
