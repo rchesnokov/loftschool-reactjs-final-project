@@ -26,7 +26,6 @@ const isBtcFetching = handleActions(
   {
     [fetchBtcSuccess]: () => false,
     [fetchBtcFailure]: () => false,
-    [selectCurrency]: () => true,
     [selectOffset]: () => true,
   },
   true,
@@ -36,7 +35,6 @@ const isEthFetching = handleActions(
   {
     [fetchEthSuccess]: () => false,
     [fetchEthFailure]: () => false,
-    [selectCurrency]: () => true,
     [selectOffset]: () => true,
   },
   true,

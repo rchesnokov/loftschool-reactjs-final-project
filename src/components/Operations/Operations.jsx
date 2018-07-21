@@ -1,21 +1,26 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
+import { compose, withState } from 'recompose'
 import * as R from 'ramda'
 import styled from 'styled-components'
 import Table from 'components/Table'
+import { purchaseCurrencyRequest, sellCurrencyRequest } from 'modules/account'
+import { getSelectedCurrencyRates } from 'modules/currency'
 import {
   normalizeNumberInput,
   containsOnlyDigitsAndPoint,
   hasTrailingPoint,
   removeTrailingPoint,
 } from 'utils/helpers'
-import { getSelectedCurrencyRates } from 'modules/currency'
 
 const mapStateToProps = state => ({
   rates: getSelectedCurrencyRates(state),
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  purchaseCurrencyRequest,
+  sellCurrencyRequest,
+}
 
 class Operations extends PureComponent {
   state = {
@@ -28,9 +33,14 @@ class Operations extends PureComponent {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    const { rates } = this.props
+    const { rates, updating } = this.props
     const { inputs, editing } = this.state
     const editingUsd = !!editing && editing !== 'cryptocurrency'
+
+    if (updating) {
+      this.props.setUpdating(false)
+      return
+    }
 
     if (!R.equals(rates, prevProps.rates) && !editingUsd) {
       this.updateInputs()
@@ -51,19 +61,62 @@ class Operations extends PureComponent {
       return
     }
 
-    this.updateInputs(stateChanges[0])
+    this.updateInputs(...stateChanges[0])
   }
 
-  updateInputs = name => {
+  getOperationResult = value => {
+    if ((value % 1).toString().length > 4) {
+      value = value.toFixed(4)
+    }
+
+    return String(value)
+  }
+
+  updateInputs = (name, value) => {
     const cryptocurrency = Number(this.state.inputs.cryptocurrency)
     const { rates } = this.props
 
-    console.log(cryptocurrency, rates)
+    this.props.setUpdating(true)
 
-    this.setState({
-      usdSell: String(cryptocurrency * rates.sell),
-      usdPurchase: String(cryptocurrency * rates.purchase),
-    })
+    switch (name) {
+      case 'usdSell':
+        this.setState(prevState => ({
+          ...prevState,
+          inputs: {
+            ...prevState.inputs,
+            cryptocurrency: this.getOperationResult(Number(value) / rates.sell),
+            usdPurchase: this.getOperationResult(
+              (Number(value) / rates.sell) * rates.purchase,
+            ),
+          },
+        }))
+        break
+      case 'usdPurchase':
+        this.setState(prevState => ({
+          ...prevState,
+          inputs: {
+            ...prevState.inputs,
+            cryptocurrency: this.getOperationResult(
+              Number(value) / rates.purchase,
+            ),
+            usdSell: this.getOperationResult(
+              (Number(value) / rates.purchase) * rates.sell,
+            ),
+          },
+        }))
+        break
+      default:
+        this.setState(prevState => ({
+          ...prevState,
+          inputs: {
+            ...prevState.inputs,
+            usdSell: this.getOperationResult(cryptocurrency * rates.sell),
+            usdPurchase: this.getOperationResult(
+              cryptocurrency * rates.purchase,
+            ),
+          },
+        }))
+    }
   }
 
   handleFocus = e => {
@@ -77,7 +130,11 @@ class Operations extends PureComponent {
       value = removeTrailingPoint(value)
     }
 
-    this.setState({ [name]: value, editing: false })
+    this.updateInputs()
+    this.setState(state => ({
+      inputs: { ...state.inputs, [name]: value },
+      editing: false,
+    }))
   }
 
   handleInput = e => {
@@ -91,7 +148,23 @@ class Operations extends PureComponent {
 
     value = normalizeNumberInput(value)
 
-    this.setState({ [name]: value })
+    this.setState(state => ({
+      ...state,
+      inputs: {
+        ...state.inputs,
+        [name]: value,
+      },
+    }))
+  }
+
+  handlePurchase = e => {
+    const value = this.state.inputs.cryptocurrency
+    this.props.purchaseCurrencyRequest(value)
+  }
+
+  handleSell = e => {
+    const value = this.state.inputs.cryptocurrency
+    this.props.sellCurrencyRequest(value)
   }
 
   renderInput(name) {
@@ -113,12 +186,12 @@ class Operations extends PureComponent {
       [
         <Rate>{this.renderInput('usdSell')}</Rate>,
         <Unit>$</Unit>,
-        <BuyButton>Продать</BuyButton>,
+        <BuyButton onClick={this.handleSell}>Продать</BuyButton>,
       ],
       [
         <Rate>{this.renderInput('usdPurchase')}</Rate>,
         <Unit>$</Unit>,
-        <SellButton>Купить</SellButton>,
+        <SellButton onClick={this.handlePurchase}>Купить</SellButton>,
       ],
     ]
 
@@ -182,7 +255,10 @@ const SellButton = Button.extend`
   }
 `
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+  withState('updating', 'setUpdating', false),
 )(Operations)
