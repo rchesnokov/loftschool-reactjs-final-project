@@ -5,7 +5,7 @@ import * as R from 'ramda'
 import styled from 'styled-components'
 import Table from 'components/Table'
 import { purchaseCurrencyRequest, sellCurrencyRequest } from 'modules/account'
-import { getSelectedCurrencyRates } from 'modules/currency'
+import { getSelected, getSelectedCurrencyRates } from 'modules/currency/index'
 import {
   normalizeNumberInput,
   containsOnlyDigitsAndPoint,
@@ -14,6 +14,7 @@ import {
 } from 'utils/helpers'
 
 const mapStateToProps = state => ({
+  selected: getSelected(state),
   rates: getSelectedCurrencyRates(state),
 })
 
@@ -181,8 +182,12 @@ class Operations extends PureComponent {
   }
 
   render() {
+    const { selected } = this.props
     const tableContent = [
-      [<Rate>{this.renderInput('cryptocurrency')}</Rate>, <Unit>BTC</Unit>],
+      [
+        <Rate>{this.renderInput('cryptocurrency')}</Rate>,
+        <Unit>{selected.toUpperCase()}</Unit>,
+      ],
       [
         <Rate>{this.renderInput('usdSell')}</Rate>,
         <Unit>$</Unit>,
