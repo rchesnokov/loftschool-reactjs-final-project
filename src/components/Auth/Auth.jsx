@@ -127,11 +127,6 @@ export class Login extends PureComponent {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Login)
-
 const Wrapper = styled.div`
   position: relative;
   display: flex;
@@ -213,3 +208,8 @@ const Error = styled.div`
   border-radius: 7px;
   background-color: #ffe3e3;
 `
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Login)

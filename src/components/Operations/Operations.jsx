@@ -38,20 +38,24 @@ class Operations extends PureComponent {
     const { inputs, editing } = this.state
     const editingUsd = !!editing && editing !== 'cryptocurrency'
 
+    // Recompose prop to prevent endless cycle
     if (updating) {
       this.props.setUpdating(false)
       return
     }
 
+    // Update rates whenever not editing $ inputs
     if (!R.equals(rates, prevProps.rates) && !editingUsd) {
       this.updateInputs()
       return
     }
 
+    // Return if neither props nor state didn't change
     if (R.equals(inputs, prevState.inputs)) {
       return
     }
 
+    // -> [[name, value]...] of changed inputs
     const stateChanges = R.differenceWith(
       (x, y) => x[1] === y[1],
       R.toPairs(this.state.inputs),
@@ -65,6 +69,7 @@ class Operations extends PureComponent {
     this.updateInputs(...stateChanges[0])
   }
 
+  // Set maximum 4 decimals and cast to string
   getOperationResult = value => {
     if ((value % 1).toString().length > 4) {
       value = value.toFixed(4)

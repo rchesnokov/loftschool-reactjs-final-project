@@ -14,12 +14,9 @@ const mapDispatchToProps = {
 }
 
 class Errors extends PureComponent {
-  close(id) {
-    this.props.hideError(id)
-  }
-
   componentDidUpdate = (prevProps, prevState) => {
     const newErrors = R.difference(this.props.errors, prevProps.errors)
+    // For every new error set timeout 10s to auto close
     R.forEach(
       error =>
         setTimeout(() => {
@@ -27,6 +24,10 @@ class Errors extends PureComponent {
         }, 10000),
       newErrors,
     )
+  }
+
+  closeError(id) {
+    this.props.hideError(id)
   }
 
   render() {
@@ -37,7 +38,7 @@ class Errors extends PureComponent {
           error =>
             error.display ? (
               <Box key={error.id}>
-                <Close onClick={this.close.bind(this, error.id)} />
+                <Close onClick={this.closeError.bind(this, error.id)} />
                 <Heading>{error.heading}</Heading>
                 <Message>{error.message}</Message>
               </Box>

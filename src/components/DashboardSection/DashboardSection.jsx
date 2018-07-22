@@ -8,7 +8,7 @@ class DashboardSection extends PureComponent {
     return (
       <Section>
         <Heading>{heading}</Heading>
-        <div>{children}</div>
+        <Body>{children}</Body>
       </Section>
     )
   }
@@ -27,6 +27,10 @@ const Heading = styled.h2`
   font-size: 24px;
   font-weight: 400;
   line-height: 28px;
+`
+
+const Body = styled.div`
+  padding-bottom: 1px;
 `
 
 export default DashboardSection

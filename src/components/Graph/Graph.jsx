@@ -47,6 +47,13 @@ class Graph extends PureComponent {
     } = Recharts
 
     const { loading, currencyData, currentTime, offset } = this.props
+    const offsetNames = {
+      '1h': '1ч',
+      '4h': '4ч',
+      '8h': '8ч',
+      '1d': 'День',
+      '7d': 'Неделя',
+    }
 
     return (
       <Wrapper>
@@ -55,36 +62,14 @@ class Graph extends PureComponent {
         <Header>
           <span>Время сервера: {currentTime}</span>
           <span>
-            <OffsetControl
-              active={offset === '1h'}
-              onClick={this.selectOffset.bind(this, '1h')}
-            >
-              1ч
-            </OffsetControl>
-            <OffsetControl
-              active={offset === '4h'}
-              onClick={this.selectOffset.bind(this, '4h')}
-            >
-              4ч
-            </OffsetControl>
-            <OffsetControl
-              active={offset === '8h'}
-              onClick={this.selectOffset.bind(this, '8h')}
-            >
-              8ч
-            </OffsetControl>
-            <OffsetControl
-              active={offset === '1d'}
-              onClick={this.selectOffset.bind(this, '1d')}
-            >
-              День
-            </OffsetControl>
-            <OffsetControl
-              active={offset === '7d'}
-              onClick={this.selectOffset.bind(this, '7d')}
-            >
-              Неделя
-            </OffsetControl>
+            {['1h', '4h', '8h', '1d', '7d'].map(off => (
+              <OffsetControl
+                active={offset === off}
+                onClick={this.selectOffset.bind(this, off)}
+              >
+                {offsetNames[off]}
+              </OffsetControl>
+            ))}
           </span>
         </Header>
 
