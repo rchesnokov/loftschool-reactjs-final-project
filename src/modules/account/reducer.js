@@ -1,9 +1,6 @@
-import { combineReducers } from 'redux'
 import { handleActions } from 'redux-actions'
 import {
-  fetchAccountRequest,
   fetchAccountSuccess,
-  fetchAccountFailure,
   purchaseCurrencySuccess,
   sellCurrencySuccess,
 } from './actions'

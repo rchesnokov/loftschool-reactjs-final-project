@@ -1,12 +1,10 @@
 import moment from 'moment'
 import * as R from 'ramda'
 import { createSelector } from 'reselect'
-import { roundToOneDecimal } from 'utils/helpers'
+import { roundToTwoDecimals } from 'utils/helpers'
 
 export const getBtc = state => state.currency.btc
 export const getEth = state => state.currency.eth
-
-export const getCurrencies = state => state.currency
 export const getSelected = state => state.currency.selected
 export const getOffset = state => state.currency.offset
 export const getIsBtcFetching = state => state.currency.isBtcFetching
@@ -18,6 +16,11 @@ export const getIsLoading = createSelector(
     (selected === 'btc' && fetchingBtc) || (selected === 'eth' && fetchingEth),
 )
 
+export const getCurrencies = createSelector([getBtc, getEth], (btc, eth) => ({
+  btc: R.reverse(btc),
+  eth: R.reverse(eth),
+}))
+
 export const getSelectedCurrencyData = createSelector(
   [getCurrencies, getSelected],
   (currencies, selected) => currencies[selected],
@@ -26,38 +29,35 @@ export const getSelectedCurrencyData = createSelector(
 export const getFormattedCurrencyData = createSelector(
   [getSelectedCurrencyData, getOffset],
   (data, offset) =>
-    R.map(
-      entry => R.assoc('mts', timeFormatter(entry, offset), entry),
-      data,
-    ).reverse(),
+    R.map(entry => R.assoc('mts', timeFormatter(entry, offset), entry), data),
 )
 
 export const getSelectedCurrencyRates = createSelector(
   getSelectedCurrencyData,
-  data => (data.length ? data[0] : { sell: 0, purchase: 0 }),
+  data => {
+    return data.length ? data[data.length - 1] : { sell: 0, purchase: 0 }
+  },
 )
 
-export const getCurrentBtcRate = getCurrencyRateMaker('btc')
-export const getCurrentEthRate = getCurrencyRateMaker('eth')
+export const getCurrentBtcRate = createSelector([getCurrencies], data => {
+  const lastElement = data.btc.length - 1
+  return lastElement <= 0
+    ? ''
+    : roundToTwoDecimals(data.btc[lastElement].purchase)
+})
+
+export const getCurrentEthRate = createSelector([getCurrencies], data => {
+  const lastElement = data.eth.length - 1
+  return lastElement <= 0
+    ? ''
+    : roundToTwoDecimals(data.eth[lastElement].purchase)
+})
 
 export const getCurrentServerTime = createSelector(
   getSelectedCurrencyData,
   data =>
     data.length ? moment(data[data.length - 1].mts).format('HH:mm') : '',
 )
-
-function getCurrencyRateMaker(currency) {
-  return state => {
-    const currencyData = state.currency[currency]
-    const lastElement = currencyData.length - 1
-
-    if (lastElement <= 0) {
-      return ''
-    }
-
-    return roundToOneDecimal(currencyData[lastElement].purchase)
-  }
-}
 
 function timeFormatter(entry, offset) {
   let timeFormat

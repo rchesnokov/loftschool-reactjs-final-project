@@ -5,7 +5,7 @@ import {
   sellCurrencyWatch,
 } from './account/saga'
 import { flowAuth } from './auth/saga'
-import { fetchCurrenciesWatch, currencyGraphFlow } from './currency/saga'
+import { currencyWatch, fetchCurrenciesWatch } from './currency/saga'
 import { fetchTransactionsWatch } from './transactions/saga'
 import { fetchUserInfoWatch } from './user/saga'
 
@@ -16,8 +16,8 @@ export default function*() {
   yield fork(purchaseCurrencyWatch)
   yield fork(sellCurrencyWatch)
 
+  yield fork(currencyWatch)
   yield fork(fetchCurrenciesWatch)
-  yield fork(currencyGraphFlow)
 
   yield fork(fetchTransactionsWatch)
 

@@ -30,8 +30,7 @@ const fetching = handleActions(
 const error = handleActions(
   {
     [combineActions(loginRequest, registerRequest)]: () => null,
-    [combineActions(loginSuccess, registerSuccess)]: (_, { payload }) =>
-      payload,
+    [combineActions(loginSuccess, registerSuccess)]: () => null,
     [combineActions(loginFailure, registerFailure)]: (_, { payload }) =>
       payload,
   },

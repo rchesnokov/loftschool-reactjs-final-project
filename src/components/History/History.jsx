@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import { connect } from 'react-redux'
 import ReactPaginate from 'react-paginate'
 import styled from 'styled-components'
@@ -19,43 +19,99 @@ const mapDispatchToProps = {
 }
 
 class History extends PureComponent {
+  PER_PAGE_COUNT = 5
+
+  state = {
+    selectedPage: 0,
+  }
+
   componentDidMount = () => {
     this.props.fetchTransactionsRequest()
   }
 
-  handlePageClick = () => {}
+  handlePageClick = ({ selected }) => {
+    this.setState({ selectedPage: selected })
+  }
+
+  renderTransactions() {
+    const { transactions } = this.props
+    const { selectedPage } = this.state
+    const arrayStartIndex = selectedPage * this.PER_PAGE_COUNT
+
+    if (!transactions.length) {
+      return (
+        <Fragment>
+          <tr>
+            <td colSpan="4" style={{ textAlign: 'center' }}>
+              Транзакций нет
+            </td>
+          </tr>
+        </Fragment>
+      )
+    }
+
+    const transactionsToDisplay = transactions.slice(
+      arrayStartIndex,
+      arrayStartIndex + this.PER_PAGE_COUNT,
+    )
+
+    const transactionRows = transactionsToDisplay.map(transaction => (
+      <tr key={transaction.id}>
+        <td>{transaction.name}</td>
+        <td>{transaction.created_at}</td>
+        <td>{transaction.crypto_delta}</td>
+        <td>{transaction.usd_delta}</td>
+      </tr>
+    ))
+
+    const remainderRows =
+      transactionsToDisplay.length < this.PER_PAGE_COUNT
+        ? this.renderEmptyRows(transactionsToDisplay.length)
+        : null
+
+    return (
+      <Fragment>
+        {transactionRows}
+        {remainderRows}
+      </Fragment>
+    )
+  }
+
+  renderEmptyRows(displayedLength) {
+    const trs = Array(this.PER_PAGE_COUNT - displayedLength).fill(null)
+    const tds = Array(4).fill(null)
+
+    const emptyRows = trs.map((_, index) =>
+      // prettier-ignore
+      <tr key={index}>
+        {tds.map((_, index) => <td key={index}>&nbsp;</td>)}
+      </tr>,
+    )
+
+    return <Fragment>{emptyRows}</Fragment>
+  }
 
   render() {
-    const { transactions, selectedCurrency } = this.props
+    const { selectedCurrency, transactions } = this.props
 
     return (
       <Wrapper>
         <Table>
           <thead>
             <tr>
-              <th>Операция</th>
-              <th>Дата</th>
-              <th>BTC</th>
+              <th style={{ width: 130 + 'px' }}>Операция</th>
+              <th style={{ width: 220 + 'px' }}>Дата</th>
+              <th>{selectedCurrency.toUpperCase()}</th>
               <th>USD</th>
             </tr>
           </thead>
-          <tbody>
-            {transactions &&
-              transactions.map(t => (
-                <tr key={t.id}>
-                  <td>Покупка</td>
-                  <td>{t.created_at}</td>
-                  <td>{t[`${selectedCurrency}_delta`]}</td>
-                  <td>{t.usd_delta}</td>
-                </tr>
-              ))}
-          </tbody>
+          <tbody>{this.renderTransactions()}</tbody>
         </Table>
         <Bottom>
           <ReactPaginate
             previousLabel={<Arrow icon={arrow} />}
             nextLabel={<ArrowRight icon={arrow} />}
-            pageCount={1}
+            pageCount={transactions.length / this.PER_PAGE_COUNT}
             marginPagesDisplayed={2}
             pageRangeDisplayed={3}
             onPageChange={this.handlePageClick}

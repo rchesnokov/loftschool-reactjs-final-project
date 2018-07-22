@@ -4,16 +4,19 @@ import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { Redirect } from 'react-router-dom'
 import { Formik } from 'formik'
+import { Particles } from 'react-particles-js'
+import particlesParams from 'utils/particles-params'
+
 import Field from 'components/Field'
+import Loader from 'components/Loader'
+
 import {
   loginRequest,
   getIsAuthorized,
+  getIsFetching,
   getIsErrorPresent,
   getErrorMessage,
 } from 'modules/auth'
-
-import { Particles } from 'react-particles-js'
-import particlesParams from 'utils/particles-params'
 
 import logo from './images/Logo.svg'
 import iconUser from './images/user-shape.svg'
@@ -21,6 +24,7 @@ import iconLock from './images/padlock-unlock.svg'
 
 const mapStateToProps = state => ({
   isAuthorized: getIsAuthorized(state),
+  isFetching: getIsFetching(state),
   isErrorPresent: getIsErrorPresent(state),
   errorMessage: getErrorMessage(state),
 })
@@ -51,7 +55,13 @@ export class Login extends PureComponent {
   }
 
   render() {
-    const { state, isAuthorized, isErrorPresent, errorMessage } = this.props
+    const {
+      state,
+      isAuthorized,
+      isFetching,
+      isErrorPresent,
+      errorMessage,
+    } = this.props
     const { submitText, switchText, linkText, linkPath } = authState[state]
 
     if (isAuthorized) {
@@ -64,6 +74,8 @@ export class Login extends PureComponent {
           <Logo src={logo} alt="logotype" />
 
           <Block>
+            {isFetching && <Loader />}
+
             <Formik
               initialValues={{ email: '', password: '' }}
               onSubmit={this.handleFormSubmit}
@@ -140,6 +152,7 @@ const Container = styled.div`
 `
 
 const Block = styled.div`
+  position: relative;
   width: 100%;
   padding: 10px;
   margin: 10px 0;

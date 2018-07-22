@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { Particles } from 'react-particles-js'
 import particlesParams from 'utils/particles-params'
 import CurrencySelect from 'components/CurrencySelect'
+import Errors from 'components/Errors'
 import logo from './images/Logo-white.svg'
 class Layout extends PureComponent {
   render() {
@@ -10,6 +11,10 @@ class Layout extends PureComponent {
 
     return (
       <PageWrapper>
+        <ErrorsContainer>
+          <Errors />
+        </ErrorsContainer>
+
         <Header>
           <Container>
             <HeaderInner>
@@ -155,6 +160,13 @@ const Copyright = styled.div`
   font-size: 14px;
   font-weight: 300;
   line-height: 1.33;
+`
+
+const ErrorsContainer = styled.div`
+  z-index: 999;
+  position: fixed;
+  top: 10px;
+  right: 20px;
 `
 
 export default Layout

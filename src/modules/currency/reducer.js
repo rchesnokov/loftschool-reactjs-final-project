@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux'
 import { handleAction, handleActions } from 'redux-actions'
 import {
-  fetchBtcRequest,
   fetchBtcSuccess,
   fetchBtcFailure,
-  fetchEthRequest,
   fetchEthSuccess,
   fetchEthFailure,
   selectCurrency,
