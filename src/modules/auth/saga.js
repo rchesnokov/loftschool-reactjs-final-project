@@ -26,20 +26,28 @@ function* authorize(email, password) {
     yield put(loginSuccess())
     return token
   } catch (error) {
-    yield put(loginFailure(error.data.message))
+    yield put(loginFailure({ '#': error.data.message }))
   }
 }
 
-function* register(action) {
-  const { email, password } = action.payload
+function* register(email, password) {
   try {
     const response = yield call(registration, { email, password })
-    const token = response.jwt
+    const token = response.data.jwt
     yield call(setTokenToLocalStorage, token)
     yield call(setTokenApi, token)
     yield put(registerSuccess())
   } catch (error) {
-    yield put(registerFailure(error.data.message))
+    let message
+    if (error.data.message.email) {
+      message = `Email ${error.data.message.email}`
+    } else if (error.data.message.password) {
+      message = `Password ${error.data.message.password}`
+    } else {
+      message = error.data.message
+    }
+
+    yield put(registerFailure(message))
   }
 }
 
@@ -51,9 +59,11 @@ export function* flowAuth() {
       yield call(setTokenApi, token)
       yield put(loginSuccess())
     } else {
-      const action = yield take(loginRequest)
+      const action = yield take([loginRequest, registerRequest])
       const { email, password } = action.payload
-      token = yield call(authorize, email, password)
+      const handler =
+        action.type === loginRequest.toString() ? authorize : register
+      token = yield call(handler, email, password)
     }
 
     if (token) {

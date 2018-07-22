@@ -12,6 +12,7 @@ import Loader from 'components/Loader'
 
 import {
   loginRequest,
+  registerRequest,
   getIsAuthorized,
   getIsFetching,
   getIsErrorPresent,
@@ -29,7 +30,7 @@ const mapStateToProps = state => ({
   errorMessage: getErrorMessage(state),
 })
 
-const mapDispatchToProps = { loginRequest }
+const mapDispatchToProps = { loginRequest, registerRequest }
 
 const authState = {
   login: {
@@ -48,10 +49,18 @@ const authState = {
 
 export class Login extends PureComponent {
   handleFormSubmit = ({ email, password }) => {
-    this.props.loginRequest({
-      email,
-      password,
-    })
+    const { state } = this.props
+    if (state === 'login') {
+      this.props.loginRequest({
+        email,
+        password,
+      })
+    } else {
+      this.props.registerRequest({
+        email,
+        password,
+      })
+    }
   }
 
   render() {

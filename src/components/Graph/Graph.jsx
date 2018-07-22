@@ -62,12 +62,13 @@ class Graph extends PureComponent {
         <Header>
           <span>Время сервера: {currentTime}</span>
           <span>
-            {['1h', '4h', '8h', '1d', '7d'].map(off => (
+            {['1h', '4h', '8h', '1d', '7d'].map((_offset, index) => (
               <OffsetControl
-                active={offset === off}
-                onClick={this.selectOffset.bind(this, off)}
+                key={index}
+                active={offset === _offset}
+                onClick={this.selectOffset.bind(this, _offset)}
               >
-                {offsetNames[off]}
+                {offsetNames[_offset]}
               </OffsetControl>
             ))}
           </span>
