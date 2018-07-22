@@ -14,3 +14,10 @@ install:
 script:
   - yarn build
   - yarn test
+
+deploy:
+  provider: heroku
+  app: rchesnokov-loftschool-react-js
+  api_key:
+    secure: $HEROKU_KEY
+
