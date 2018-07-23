@@ -49,18 +49,9 @@ const authState = {
 
 export class Login extends PureComponent {
   handleFormSubmit = ({ email, password }) => {
-    const { state } = this.props
-    if (state === 'login') {
-      this.props.loginRequest({
-        email,
-        password,
-      })
-    } else {
-      this.props.registerRequest({
-        email,
-        password,
-      })
-    }
+    const { state, loginRequest, registerRequest } = this.props
+    const dispatchAction = state === 'login' ? loginRequest : registerRequest
+    dispatchAction({ email, password })
   }
 
   render() {

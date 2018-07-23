@@ -1,3 +1,5 @@
+// @flow
+
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import DashboardSection from 'components/DashboardSection'
@@ -6,7 +8,9 @@ import Graph from 'components/Graph'
 import History from 'components/History'
 import Operations from 'components/Operations'
 
-class Dashboard extends PureComponent {
+type Props = {}
+
+class Dashboard extends PureComponent<Props> {
   render() {
     return (
       <Container>

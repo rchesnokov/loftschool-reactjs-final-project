@@ -29,12 +29,17 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "flow": "flow",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
     "@types/jest": "^23.3.0",
+    "babel-eslint": "^8.2.6",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "eslint-config-react-app": "^2.1.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "flow-bin": "^0.77.0",
     "prettier": "^1.13.7"
   }
 }

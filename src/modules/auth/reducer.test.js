@@ -15,7 +15,7 @@ const initialState = {
   error: null,
 }
 
-describe('Reducer auth', () => {
+describe('AUTH reducer', () => {
   it('Инициализация с корректным state:', () => {
     expect(reducer(undefined, {})).toEqual(initialState)
   })
@@ -45,7 +45,7 @@ describe('Reducer auth', () => {
 
   describe('Экшны loginSuccess и registerSuccess:', () => {
     const actionLogin = loginSuccess({ data: 'somedata' })
-    const actionRegister = loginSuccess({ data: 'somedata' })
+    const actionRegister = registerSuccess({ data: 'somedata' })
 
     it('выставляют значение authorized === true', () => {
       expect(reducer(initialState, actionLogin)).toMatchObject({
@@ -77,7 +77,7 @@ describe('Reducer auth', () => {
 
   describe('Экшны loginFailure и registerFailure:', () => {
     const actionLogin = loginFailure('error')
-    const actionRegister = loginFailure('error')
+    const actionRegister = registerFailure('error')
 
     it('выставляют значение fetching === false', () => {
       expect(reducer({ fetching: true }, actionLogin)).toMatchObject({
@@ -101,7 +101,7 @@ describe('Reducer auth', () => {
   describe('Экшн logout:', () => {
     const action = logout()
 
-    it('выставляют значение authorized === false', () => {
+    it('выставляет значение authorized === false', () => {
       expect(reducer({ authorized: true }, action)).toMatchObject({
         authorized: false,
       })

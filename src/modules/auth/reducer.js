@@ -13,6 +13,7 @@ import {
 const authorized = handleActions(
   {
     [loginSuccess]: () => true,
+    [registerSuccess]: () => true,
     [logout]: () => false,
   },
   false,

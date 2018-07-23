@@ -1,4 +1,4 @@
-import { call, put, take, takeLatest } from 'redux-saga/effects'
+import { call, put, take } from 'redux-saga/effects'
 import { setTokenApi, clearTokenApi, login, registration } from 'api/server'
 import {
   getTokenFromLocalStorage,
@@ -17,7 +17,7 @@ import {
 import { fetchUserRequest } from 'modules/user'
 import { fetchAccountRequest } from 'modules/account'
 
-function* authorize(email, password) {
+export function* authorize(email, password) {
   try {
     const response = yield call(login, { email, password })
     const token = response.data.jwt
@@ -26,11 +26,11 @@ function* authorize(email, password) {
     yield put(loginSuccess())
     return token
   } catch (error) {
-    yield put(loginFailure({ '#': error.data.message }))
+    yield put(loginFailure(error.data.message))
   }
 }
 
-function* register(email, password) {
+export function* register(email, password) {
   try {
     const response = yield call(registration, { email, password })
     const token = response.data.jwt
@@ -76,8 +76,4 @@ export function* flowAuth() {
       yield call(clearTokenApi)
     }
   }
-}
-
-export function* watchRegister() {
-  yield takeLatest(registerRequest, register)
 }

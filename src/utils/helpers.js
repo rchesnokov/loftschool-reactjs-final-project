@@ -1,23 +1,37 @@
-export const roundToTwoDecimals = number => Math.round(number * 100) / 100
+// @flow
 
-export const getIntegerPart = number => Math.trunc(number)
-export const getDecimalPart = number =>
+import * as R from 'ramda'
+
+export const roundToTwoDecimals = (number: number): number =>
+  Math.round(number * 100) / 100
+
+export const getIntegerPart = (number: number): string =>
+  Math.trunc(number).toString()
+export const getDecimalPart = (number: number): string =>
   (number % 1)
     .toFixed(4)
     .replace(/0+$/, '')
-    .substring(2) || 0
+    .substring(2) || '0'
 
-export const removeDecimalAfterFourth = value =>
+export const addZeroBeforePointIfNoInteger = (value: string): string =>
+  value.replace(/^\./g, '0.')
+export const removeZeroesBeforeFirstDigit = (value: string): string =>
+  value.replace(/^0*(\d)/g, '$1')
+export const removeDecimalAfterFourth = (value: string): string =>
   value.replace(/(\.\d{4})\d+/g, '$1')
+export const removeTrailingPoint = (value: string): string =>
+  value.replace(/\.$/g, '')
+export const replaceEmptyStringWithZero = (value: string): string =>
+  value.replace(/^$/g, '0')
 
-export const normalizeNumberInput = value =>
-  removeDecimalAfterFourth(
-    value
-      .replace(/^$/g, '0') // sets 0 if empty
-      .replace(/^0*(\d)/g, '$1') // remove first zeroes
-      .replace(/^\./g, '0.'), // add zero before first point
-  )
+export const normalizeNumberInput = (value: string): string =>
+  R.pipe(
+    replaceEmptyStringWithZero,
+    addZeroBeforePointIfNoInteger,
+    removeZeroesBeforeFirstDigit,
+    removeDecimalAfterFourth,
+  )(value)
 
-export const containsOnlyDigitsAndPoint = value => /^\d+(\.\d*)?$/gi.test(value)
-export const hasTrailingPoint = value => /\.$/.test(value)
-export const removeTrailingPoint = value => value.replace(/\.$/g, '') // remove trailing comma
+export const containsOnlyDigitsAndPoint = (value: string): boolean =>
+  /^\d+(\.\d*)?$/gi.test(value)
+export const hasTrailingPoint = (value: string): boolean => /\.$/.test(value)
