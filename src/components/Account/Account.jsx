@@ -1,3 +1,5 @@
+// @flow
+
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
@@ -5,13 +7,19 @@ import Table from 'components/Table'
 import { getBtc, getEth, getUsd } from 'modules/account'
 import { getIntegerPart, getDecimalPart } from 'utils/helpers'
 
+type Props = {
+  btc: number,
+  eth: number,
+  usd: number,
+}
+
 const mapStateToProps = state => ({
   btc: getBtc(state),
   eth: getEth(state),
   usd: getUsd(state),
 })
 
-class Account extends PureComponent {
+class Account extends PureComponent<Props> {
   render() {
     const { btc, eth, usd } = this.props
     const currencyNames = ['BTH', 'ETC', '$']
