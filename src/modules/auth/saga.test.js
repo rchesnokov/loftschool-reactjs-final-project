@@ -1,26 +1,15 @@
-import { flowAuth, authorize, register } from './saga'
+import { flowAuth, authorize } from './saga'
 import { call, put, take } from 'redux-saga/effects'
-import { setTokenApi, clearTokenApi, login, registration } from 'api/server'
+import { setTokenApi, clearTokenApi } from 'api/server'
 import {
   getTokenFromLocalStorage,
-  setTokenToLocalStorage,
   removeTokenFromLocalStorage,
 } from 'api/localStorage'
-import {
-  loginRequest,
-  loginSuccess,
-  loginFailure,
-  registerRequest,
-  registerSuccess,
-  registerFailure,
-  logout,
-} from './actions'
+import { loginRequest, loginSuccess, registerRequest, logout } from './actions'
 import { fetchUserRequest } from 'modules/user'
 import { fetchAccountRequest } from 'modules/account'
 
 describe('AUTH saga', () => {
-  const gen = flowAuth()
-
   describe('Сага flowAuth', () => {
     describe('Сценарий 1: логин с токеном из localStorage', () => {
       const gen = flowAuth()
@@ -66,9 +55,9 @@ describe('AUTH saga', () => {
 
     describe('После авторизации:', () => {
       const gen = flowAuth()
-      gen.next().value
-      gen.next('token').value
-      gen.next().value
+      gen.next()
+      gen.next('token')
+      gen.next()
 
       it('Вызывает экшены fetchUserRequest и fetchAccountRequest', () => {
         expect(gen.next().value).toEqual(put(fetchUserRequest()))
