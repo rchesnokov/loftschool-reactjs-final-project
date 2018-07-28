@@ -30,7 +30,11 @@ class Operations extends PureComponent {
       usdSell: '0',
       usdPurchase: '0',
     },
-    editing: false,
+    editing: null,
+  }
+
+  componentDidMount = () => {
+    this.updateInputs()
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -81,47 +85,39 @@ class Operations extends PureComponent {
   updateInputs = (name, value) => {
     const cryptocurrency = Number(this.state.inputs.cryptocurrency)
     const { rates } = this.props
+    const setInputsState = inputsObj => {
+      this.setState(state => ({
+        ...state,
+        inputs: { ...state.inputs, ...inputsObj },
+      }))
+    }
 
     this.props.setUpdating(true)
 
     switch (name) {
       case 'usdSell':
-        this.setState(prevState => ({
-          ...prevState,
-          inputs: {
-            ...prevState.inputs,
-            cryptocurrency: this.getOperationResult(Number(value) / rates.sell),
-            usdPurchase: this.getOperationResult(
-              (Number(value) / rates.sell) * rates.purchase,
-            ),
-          },
-        }))
+        setInputsState({
+          cryptocurrency: this.getOperationResult(Number(value) / rates.sell),
+          usdPurchase: this.getOperationResult(
+            (Number(value) / rates.sell) * rates.purchase,
+          ),
+        })
         break
       case 'usdPurchase':
-        this.setState(prevState => ({
-          ...prevState,
-          inputs: {
-            ...prevState.inputs,
-            cryptocurrency: this.getOperationResult(
-              Number(value) / rates.purchase,
-            ),
-            usdSell: this.getOperationResult(
-              (Number(value) / rates.purchase) * rates.sell,
-            ),
-          },
-        }))
+        setInputsState({
+          cryptocurrency: this.getOperationResult(
+            Number(value) / rates.purchase,
+          ),
+          usdSell: this.getOperationResult(
+            (Number(value) / rates.purchase) * rates.sell,
+          ),
+        })
         break
       default:
-        this.setState(prevState => ({
-          ...prevState,
-          inputs: {
-            ...prevState.inputs,
-            usdSell: this.getOperationResult(cryptocurrency * rates.sell),
-            usdPurchase: this.getOperationResult(
-              cryptocurrency * rates.purchase,
-            ),
-          },
-        }))
+        setInputsState({
+          usdSell: this.getOperationResult(cryptocurrency * rates.sell),
+          usdPurchase: this.getOperationResult(cryptocurrency * rates.purchase),
+        })
     }
   }
 
