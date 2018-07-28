@@ -10,6 +10,7 @@ import {
   sellCurrencySuccess,
   sellCurrencyFailure,
 } from './actions'
+import { loginSuccess, registerSuccess } from 'modules/auth/actions'
 import { getSelected as getSelectedCurrency } from 'modules/currency'
 import { getWallet, buyCurrency, sellCurrency } from 'api/server'
 
@@ -42,6 +43,11 @@ function* sellCurrencySaga(action) {
   } catch (error) {
     yield put(sellCurrencyFailure(error))
   }
+}
+
+export function* fetchAccountOnLoginWatch() {
+  yield takeLatest(loginSuccess, fetchAccount)
+  yield takeLatest(registerSuccess, fetchAccount)
 }
 
 export function* fetchAccountWatch() {

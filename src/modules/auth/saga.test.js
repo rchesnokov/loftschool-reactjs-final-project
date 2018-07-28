@@ -59,11 +59,6 @@ describe('AUTH saga', () => {
       gen.next('token')
       gen.next()
 
-      it('Вызывает экшены fetchUserRequest и fetchAccountRequest', () => {
-        expect(gen.next().value).toEqual(put(fetchUserRequest()))
-        expect(gen.next().value).toEqual(put(fetchAccountRequest()))
-      })
-
       it('Ожидает события logout', () => {
         expect(gen.next().value).toEqual(take(logout))
       })

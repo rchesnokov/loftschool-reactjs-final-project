@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import Table from 'components/Table'
-import { getBtc, getEth, getUsd } from 'modules/account'
+import { getBtc, getEth, getUsd } from 'modules/account/selectors'
 import { getIntegerPart, getDecimalPart } from 'utils/helpers'
 import { type State } from 'types/index'
 

@@ -1,6 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
 import { getUserInfo } from 'api/server'
 import { fetchUserRequest, fetchUserSuccess, fetchUserFailure } from './actions'
+import { loginSuccess, registerSuccess } from 'modules/auth/actions'
 
 function* fetchUser() {
   try {
@@ -13,4 +14,9 @@ function* fetchUser() {
 
 export function* fetchUserInfoWatch() {
   yield takeLatest(fetchUserRequest, fetchUser)
+}
+
+export function* fetchUserInfoOnLogin() {
+  yield takeLatest(loginSuccess, fetchUser)
+  yield takeLatest(registerSuccess, fetchUser)
 }
