@@ -32,7 +32,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = { loginRequest, registerRequest }
 
-const authState = {
+export const authState = {
   login: {
     submitText: 'Войти',
     switchText: 'Впервые на сайте?',
@@ -47,7 +47,7 @@ const authState = {
   },
 }
 
-export class Login extends PureComponent {
+export class Auth extends PureComponent {
   handleFormSubmit = ({ email, password }) => {
     const { state, loginRequest, registerRequest } = this.props
     const dispatchAction = state === 'login' ? loginRequest : registerRequest
@@ -212,4 +212,4 @@ const Error = styled.div`
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Login)
+)(Auth)
