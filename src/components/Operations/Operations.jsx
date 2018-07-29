@@ -70,7 +70,7 @@ class Operations extends PureComponent {
 
   // Set maximum 8 decimals and cast to string
   getOperationResult = value => {
-    return normalizeNumberInput(String(value))
+    return String(value)
   }
 
   updateInputs = (name, value) => {
@@ -156,7 +156,7 @@ class Operations extends PureComponent {
       <Input
         name={name}
         type="text"
-        value={this.state.inputs[name]}
+        value={normalizeNumberInput(this.state.inputs[name])}
         onChange={this.handleInput}
         onFocus={this.handleFocus}
         onBlur={this.hanleBlur}
