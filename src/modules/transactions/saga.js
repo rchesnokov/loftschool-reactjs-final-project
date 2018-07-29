@@ -5,6 +5,10 @@ import {
   fetchTransactionsFailure,
 } from './actions'
 import { getUserTransactions } from 'api/server'
+import {
+  purchaseCurrencySuccess,
+  sellCurrencySuccess,
+} from 'modules/account/index'
 
 function* fetchTransactions() {
   try {
@@ -17,4 +21,6 @@ function* fetchTransactions() {
 
 export function* fetchTransactionsWatch() {
   yield takeLatest(fetchTransactionsRequest, fetchTransactions)
+  yield takeLatest(purchaseCurrencySuccess, fetchTransactions)
+  yield takeLatest(sellCurrencySuccess, fetchTransactions)
 }

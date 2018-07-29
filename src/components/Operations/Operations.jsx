@@ -99,7 +99,7 @@ class Operations extends PureComponent {
         setInputsState({
           cryptocurrency: this.getOperationResult(Number(value) / rates.sell),
           usdPurchase: this.getOperationResult(
-            (Number(value) / rates.sell) * rates.purchase,
+            (Number(value) / rates.purchase) * rates.sell,
           ),
         })
         break
@@ -109,14 +109,14 @@ class Operations extends PureComponent {
             Number(value) / rates.purchase,
           ),
           usdSell: this.getOperationResult(
-            (Number(value) / rates.purchase) * rates.sell,
+            (Number(value) / rates.sell) * rates.purchase,
           ),
         })
         break
       default:
         setInputsState({
-          usdSell: this.getOperationResult(cryptocurrency * rates.sell),
-          usdPurchase: this.getOperationResult(cryptocurrency * rates.purchase),
+          usdSell: this.getOperationResult(cryptocurrency * rates.purchase),
+          usdPurchase: this.getOperationResult(cryptocurrency * rates.sell),
         })
     }
   }
