@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 import { getSelected } from 'modules/currency/index'
 import * as R from 'ramda'
 import moment from 'moment'
-import { removeDecimalAfterFourth } from 'utils/helpers'
+import { removeDecimalsAfterFourth } from 'utils/helpers'
 
 export const getTransactions = state => state.transactions.data
 export const getTransactionsByCurrency = createSelector(
@@ -25,7 +25,7 @@ export const getFormattedTransactions = createSelector(
         ...transaction,
         name: transaction.crypto_delta[0] === '+' ? 'Покупка' : 'Продажа',
         created_at: moment(transaction.created_at).format('DD-MM-YYYY HH:mm'),
-        usd_delta: removeDecimalAfterFourth(transaction.usd_delta),
+        usd_delta: removeDecimalsAfterFourth(transaction.usd_delta),
       }
     }),
 )

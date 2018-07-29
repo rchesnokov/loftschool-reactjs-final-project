@@ -73,13 +73,9 @@ class Operations extends PureComponent {
     this.updateInputs(...stateChanges[0])
   }
 
-  // Set maximum 4 decimals and cast to string
+  // Set maximum 8 decimals and cast to string
   getOperationResult = value => {
-    if ((value % 1).toString().length > 4) {
-      value = value.toFixed(4)
-    }
-
-    return String(value)
+    return normalizeNumberInput(String(value))
   }
 
   updateInputs = (name, value) => {
@@ -97,7 +93,9 @@ class Operations extends PureComponent {
     switch (name) {
       case 'usdSell':
         setInputsState({
-          cryptocurrency: this.getOperationResult(Number(value) / rates.sell),
+          cryptocurrency: this.getOperationResult(
+            Number(value) / rates.purchase,
+          ),
           usdPurchase: this.getOperationResult(
             (Number(value) / rates.purchase) * rates.sell,
           ),
@@ -105,9 +103,7 @@ class Operations extends PureComponent {
         break
       case 'usdPurchase':
         setInputsState({
-          cryptocurrency: this.getOperationResult(
-            Number(value) / rates.purchase,
-          ),
+          cryptocurrency: this.getOperationResult(Number(value) / rates.sell),
           usdSell: this.getOperationResult(
             (Number(value) / rates.sell) * rates.purchase,
           ),
@@ -126,17 +122,8 @@ class Operations extends PureComponent {
   }
 
   hanleBlur = e => {
-    let name = e.target.name
-    let value = e.target.value
-    if (hasTrailingPoint(value)) {
-      value = removeTrailingPoint(value)
-    }
-
     this.updateInputs()
-    this.setState(state => ({
-      inputs: { ...state.inputs, [name]: value },
-      editing: false,
-    }))
+    this.setState({ editing: false })
   }
 
   handleInput = e => {

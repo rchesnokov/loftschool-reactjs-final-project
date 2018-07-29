@@ -13,12 +13,14 @@ export const getDecimalPart = (number: number): string =>
     .replace(/0+$/, '')
     .substring(2) || '0'
 
+export const removeDecimalsAfterFourth = (value: string): string =>
+  value.replace(/(\.\d{4})\d+/gi, '$1')
+export const removeDecimalsAfterEight = (value: string): string =>
+  value.replace(/(\.\d{8})\d+/gi, '$1')
 export const addZeroBeforePointIfNoInteger = (value: string): string =>
   value.replace(/^\./g, '0.')
 export const removeZeroesBeforeFirstDigit = (value: string): string =>
   value.replace(/^0*(\d)/g, '$1')
-export const removeDecimalAfterFourth = (value: string): string =>
-  value.replace(/(\.\d{4})\d+/g, '$1')
 export const removeTrailingPoint = (value: string): string =>
   value.replace(/\.$/g, '')
 export const replaceEmptyStringWithZero = (value: string): string =>
@@ -29,7 +31,7 @@ export const normalizeNumberInput = (value: string): string =>
     replaceEmptyStringWithZero,
     addZeroBeforePointIfNoInteger,
     removeZeroesBeforeFirstDigit,
-    removeDecimalAfterFourth,
+    removeDecimalsAfterEight,
   )(value)
 
 export const containsOnlyDigitsAndPoint = (value: string): boolean =>
