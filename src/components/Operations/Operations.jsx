@@ -6,12 +6,7 @@ import styled from 'styled-components'
 import Table from 'components/Table'
 import { purchaseCurrencyRequest, sellCurrencyRequest } from 'modules/account'
 import { getSelected, getSelectedCurrencyRates } from 'modules/currency/index'
-import {
-  normalizeNumberInput,
-  containsOnlyDigitsAndPoint,
-  hasTrailingPoint,
-  removeTrailingPoint,
-} from 'utils/helpers'
+import { normalizeNumberInput, containsOnlyDigitsAndPoint } from 'utils/helpers'
 
 const mapStateToProps = state => ({
   selected: getSelected(state),
