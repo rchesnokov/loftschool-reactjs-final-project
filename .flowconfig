@@ -3,6 +3,7 @@
 [include]
 
 [libs]
+flow-typed/npm/redux-actions_v2.x.x.js
 
 [lints]
 

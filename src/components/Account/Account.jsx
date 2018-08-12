@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import Table from 'components/Table'
 import { getBtc, getEth, getUsd } from 'modules/account/selectors'
 import { getIntegerPart, getDecimalPart } from 'utils/helpers'
-import { type State } from 'types/index'
+import type { State } from 'types/index'
 
 type Props = {
   btc: number,
@@ -14,7 +14,7 @@ type Props = {
   usd: number,
 }
 
-const mapStateToProps = (state: State): Props => ({
+const mapStateToProps = (state: State) => ({
   btc: getBtc(state),
   eth: getEth(state),
   usd: getUsd(state),

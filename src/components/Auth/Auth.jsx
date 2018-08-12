@@ -1,3 +1,5 @@
+// @flow
+
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -22,8 +24,24 @@ import {
 import logo from './images/Logo.svg'
 import iconUser from './images/user-shape.svg'
 import iconLock from './images/padlock-unlock.svg'
+import { type State } from 'types/index'
 
-const mapStateToProps = state => ({
+type Credentials = {
+  email: string,
+  password: string,
+}
+
+type Props = {
+  state: 'login' | 'registration',
+  isAuthorized: boolean,
+  isFetching: boolean,
+  isErrorPresent: boolean,
+  errorMessage: string,
+  loginRequest: Credentials => void,
+  registerRequest: Credentials => void,
+}
+
+const mapStateToProps = (state: State) => ({
   isAuthorized: getIsAuthorized(state),
   isFetching: getIsFetching(state),
   isErrorPresent: getIsErrorPresent(state),
@@ -47,8 +65,8 @@ export const authState = {
   },
 }
 
-export class Auth extends PureComponent {
-  handleFormSubmit = ({ email, password }) => {
+export class Auth extends PureComponent<Props> {
+  handleFormSubmit = ({ email, password }: Credentials) => {
     const { state, loginRequest, registerRequest } = this.props
     const dispatchAction = state === 'login' ? loginRequest : registerRequest
     dispatchAction({ email, password })
